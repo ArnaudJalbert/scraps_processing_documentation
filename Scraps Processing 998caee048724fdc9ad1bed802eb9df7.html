@@ -1,0 +1,679 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Scraps Processing</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="998caee0-4872-4fdc-9ad1-bed802eb9df7" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🧦</span></div><h1 class="page-title">Scraps Processing</h1><p class="page-description"></p></header><div class="page-body"><nav id="772bc05c-442a-49c3-8d7b-1652a5e9c0b5" class="block-color-gray table_of_contents"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#bda8a32c-4596-4599-b325-766739cd334c">Research Questions</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#102b7280-0b75-4825-b586-d8e91beeaba2">Keywords</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#cb128443-ac59-4c59-9777-7f2095222821">Description of the project</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#dc0d3014-82db-4189-9d75-a36a2eae7835">General Workflow</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#585a83bc-c383-4b6c-8064-d23c6821922e">Implemented Modules</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#bf650e29-cce3-4449-85f2-73c25f01e418">Scraps Processing Scanner</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#f379a9d2-2ba7-466b-9cd1-cbeff5a9fbff">Scraps Processing API</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#9616a30e-80b9-433a-89a3-1ae3c49af6d9">Scraps Processing Interface</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#155aae0d-cf3f-4d2f-92eb-3d228cb2118c">Reflections</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#bfbbceab-6a51-4523-af2e-c7802f905471">Scanning Scraps</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#99fd673e-2849-46ef-9e2e-90adbd02c74c">Visualizing Scraps Data</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#17824747-ebeb-4abe-85d8-2f0e5f569dac">Sharing Scraps</a></div></nav><h1 id="bda8a32c-4596-4599-b325-766739cd334c" class="">Research Questions</h1><blockquote id="ede5919b-70f8-4fab-a2fe-944aaf6aa303" class=""><em>How can we effectively collect and catalog data of fabric scraps so they can be searched and shared collectively?</em></blockquote><blockquote id="fd72efa5-6cdb-4269-a505-9aa13a7b1e5c" class=""><em>How can the process of up-cycling fabric scraps, which is usually complex and laborious for smaller companies and individuals, be digitized and optimized?</em></blockquote><blockquote id="fdec8d05-6e68-4efe-85e3-a7146e47a270" class=""><em>How can we systematically organize and categorize fabric scraps, physically and digitally, so that they can be used in an algorithmic and efficient way?</em></blockquote><h1 id="102b7280-0b75-4825-b586-d8e91beeaba2" class="">Keywords</h1><ul id="39cc5dbe-b6f1-4e27-81c8-d30f49e4d19d" class="bulleted-list"><li style="list-style-type:disc">Cataloguing</li></ul><ul id="3e4e5f87-3060-4b30-9e8e-882524c40639" class="bulleted-list"><li style="list-style-type:disc">Data collection</li></ul><ul id="28a8d9bb-35e0-4268-badb-472d3e11ea45" class="bulleted-list"><li style="list-style-type:disc">Diverting</li></ul><ul id="a01cacb8-2cb6-459f-86d9-14a89749d91a" class="bulleted-list"><li style="list-style-type:disc">Collectivity</li></ul><ul id="429af828-b223-400b-85f2-ac68ef88eb3f" class="bulleted-list"><li style="list-style-type:disc">Upcycling</li></ul><ul id="8bd2e084-a63b-49b9-a723-73673d1fd0bc" class="bulleted-list"><li style="list-style-type:disc">Process Digitization</li></ul><h1 id="cb128443-ac59-4c59-9777-7f2095222821" class="">Description of the project</h1><p id="2934ef0b-205a-4ad1-b94f-06f9eda3c166" class="">When working with fabrics to create garments, there will inevitably be some kind of leftover scraps. These remnants occur when fabric is cut to fit a certain pattern, to reduce its size to fit in a certain spot or be sewn to something else. Most people are conscious of this and will work in a way to minimize fabrics waste, but most of the time there will be small oddly shaped pieces left.
+These scraps are not necessarily wasted. Companies like <a href="https://www.regear.arcteryx.com/">Arc’teryx</a> and <a href="https://www.insider.com/guides/style/cotopaxi-outdoor-gear-del-dia-backpacks-2017-9">Cotopaxi</a> assemble the bigger scraps together to create quality products. Organizations like <a href="https://fabscrap.org">FABSCRAP</a> will gather scraps from different companies to recycle and reuse them as much as possible. The bigger scraps can often be re-used and re-distributed for smaller garments. The small ones can be shredded and used for insulation, fill for pillows, couches, and many others. These methods work and are efficient since these companies have a high volume of scraps and a system in place.
+Scraps are also re-used at a smaller scale. <a href="https://concordiauniversity.on.worldcat.org/search/detail/268547505?queryString=American%20quilts%20%3A%20the%20democratic%20art%2C%201780-2007%20%2F%20Robert%20Shaw.&amp;databaseList=">American quilters</a> have been known to reuse small and weirdly shaped scraps in crazy quilts since the 1800s. Scraps can be used for small garments like masks, scrunchies, clothes labels and tags. They are used for smaller projects since amateurs or students often have a small volume of scraps.</p><p id="32eaa532-77c9-467d-b8b7-2d7926c9b6fe" class="">Even if they have enough scraps to make a bigger project, it does not mean that they will fit together and the type of fabrics may vary greatly and be hard to assemble together. One could try to share their scraps with others but it can be long and tedious. So what if there was an efficient way to see exactly which scraps someone has and if they have enough to make a certain garment?</p><p id="c027f2fc-469e-4747-a08a-a713963abf81" class="">Scraps Processing is a project that aims to divert how textile scraps are used. It is trying to find a new processes to collect data about textile scraps using modern digital and using that information to better organize, search, and share textile scraps. The project has two goals:</p><ul id="f6d60f46-6fe3-4b00-a865-7e2b97708588" class="bulleted-list"><li style="list-style-type:disc">Create a process to quickly and efficiently gather data about a textile scrap.</li></ul><ul id="06c19348-cd2f-4fc6-afb9-4491adf736ed" class="bulleted-list"><li style="list-style-type:disc">Implement interfaces to efficiently visualize and organize the scraps and allow sharing of those scraps within the community.</li></ul><p id="34dbbe39-3442-45c6-8d57-f05d25a103d6" class="">By implementing these new processes, the project tries to change the way we interact with scraps and hopefully enhance their value and usage.</p><h1 id="dc0d3014-82db-4189-9d75-a36a2eae7835" class="">General Workflow</h1><figure id="4d383026-6428-4157-9dfc-636e24394d31" class="image"><a href="Scraps%20Processing%20998caee048724fdc9ad1bed802eb9df7/general_workflow_v001.png"><img style="width:1812px" src="Scraps%20Processing%20998caee048724fdc9ad1bed802eb9df7/general_workflow_v001.png"/></a></figure><h1 id="585a83bc-c383-4b6c-8064-d23c6821922e" class="">Implemented Modules</h1><p id="ae2dc39c-f03b-41f5-9dbd-e4650c0abbb3" class="">The project was developed across three different modules. I took this approach to separate the different workload and responsibilities. It was easier to develop this way since the modules were not dependant of each other. I could work simultaneously on the <a href="Scraps%20Processing%20998caee048724fdc9ad1bed802eb9df7/Scraps%20Processing%20Interface%201b7452d3a47d4d45bde891a8a27fe983.html"><span class="icon">🔖</span>Scraps Processing Interface</a>  and the <a href="Scraps%20Processing%20998caee048724fdc9ad1bed802eb9df7/Scraps%20Processing%20Scanner%20d047ea05d11a429ead4a9828ae6e394d.html"><span class="icon">🔬</span>Scraps Processing Scanner</a>  without any dependencies between them.</p><div id="063656bb-3868-4847-8925-9a369aef9fe1" class="column-list"><div id="aea524e8-b45a-4781-86e2-8d126070a5a1" style="width:33.33333333333333%" class="column"><h2 id="bf650e29-cce3-4449-85f2-73c25f01e418" class="">Scraps Processing Scanner</h2><figure id="d047ea05-d11a-429e-ad4a-9828ae6e394d" class="link-to-page"><a href="Scraps%20Processing%20998caee048724fdc9ad1bed802eb9df7/Scraps%20Processing%20Scanner%20d047ea05d11a429ead4a9828ae6e394d.html"><span class="icon">🔬</span>Scraps Processing Scanner</a></figure></div><div id="0e59bfbb-b728-4f94-8e77-23c67692ec2b" style="width:29.166666666666664%" class="column"><h2 id="f379a9d2-2ba7-466b-9cd1-cbeff5a9fbff" class="">Scraps Processing API</h2><figure id="892b8bd9-1f20-4a97-88fa-b2544dee732c" class="link-to-page"><a href="Scraps%20Processing%20998caee048724fdc9ad1bed802eb9df7/Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c.html"><span class="icon">📋</span>Scraps Processing API</a></figure></div><div id="34c20c7e-0f98-49fd-b782-0e636c301424" style="width:37.499999999999986%" class="column"><h2 id="9616a30e-80b9-433a-89a3-1ae3c49af6d9" class="">Scraps Processing Interface</h2><figure id="1b7452d3-a47d-4d45-bde8-91a8a27fe983" class="link-to-page"><a href="Scraps%20Processing%20998caee048724fdc9ad1bed802eb9df7/Scraps%20Processing%20Interface%201b7452d3a47d4d45bde891a8a27fe983.html"><span class="icon">🔖</span>Scraps Processing Interface</a></figure></div></div><h1 id="155aae0d-cf3f-4d2f-92eb-3d228cb2118c" class="">Reflections</h1><p id="46bff275-3f93-48cc-afcd-d1ff736932ec" class="">In this section, I try to reflect about how the three modules that were developed during the last two months implement the original idea of the project. In my very first brainstorming session, what I thought of was a device that would scan the real dimensions of a textile scraps, save that data into a database, and manipulate that data algorithmically.</p><div id="1ba55d70-4160-4ef9-b312-a6ce324cd5ba" class="column-list"><div id="e0b93602-9670-453d-89b2-366d8338cc88" style="width:62.5%" class="column"><p id="8beb9931-c209-436d-92ca-691db9a7206c" class="">I had this idea about creating an algorithm that would scan all the scraps’ dimensions and position them into this kind of mosaic that could be stitched back together into a new fabric.</p><p id="b4501735-f6b1-4f3b-8424-375d636f27b7" class="">I also had ideas about finding the biggest square or rectangle that fits onto the scrap so that it could be cut while saving as much fabrics as possible.</p><p id="a574f893-5061-43a1-93bf-b63051354583" class="">I also wanted to automatically detect the color of a scrap when scanning it so that scraps could be sorted by colors.</p><p id="c488848a-ed39-4b75-a170-adf4f51731a7" class="">I wanted users to enter the fabric’s class and type so that it could also be sorted and filtered later in the visualization phase.</p><p id="7a42fcdf-2440-4b17-86a6-c99d99f76391" class="">I had lots of plans but nothing was structured. I decided to first do research about the subject, meet up with small designers, hobbyists, friends who work in textile, anyone who’s in touch with fabrics.</p><p id="1d01ce6f-fba2-46f1-af93-f55969d0815d" class="">I got a lot of valuable feedback from that, was able to narrow down what I needed to focus on.</p></div><div id="3fdfe4c5-40dc-4813-8985-e661f3ec575e" style="width:37.50000000000001%" class="column"><figure id="abd1cc7b-9ab1-4cf5-b769-1afbc3910bb9" class="image"><a href="Scraps%20Processing%20998caee048724fdc9ad1bed802eb9df7/Screenshot_2023-12-08_at_4.17.02_PM.png"><img style="width:393px" src="Scraps%20Processing%20998caee048724fdc9ad1bed802eb9df7/Screenshot_2023-12-08_at_4.17.02_PM.png"/></a></figure></div></div><h2 id="bfbbceab-6a51-4523-af2e-c7802f905471" class="">Scanning Scraps</h2><p id="3f6c4435-638f-4794-bea7-3c120c65d618" class="">From my research, it looked like the scanning needed to be easy to use and accessible. My first idea of setting up a camera at a station at an exact height that could then be used to scan scraps did not fit those criteria. Even thought I think it would have been the most precise way to get measurements, it was hard to set up and understand, required a lot of extra gear and understanding of the process. I had to realize that my target audience were mostly not tech savvy. On the contrary, they preferred working with their hands, using manual tools, writing on paper, and keeping the computer and technology away when they were creating.</p><p id="3d76d4dc-f485-4eac-a42c-c13e6abf06f6" class="">That’s when I started thinking the phone measurements approach. I thought of those measurements app that would scan the environments and enable you to point to two positions to get the measurements between them. I already knew this was using AR technologies so I started looking into implementing this into my project.</p><p id="c38b9bd6-f8c9-4599-aa3d-5c12581898fe" class="">I went through a lot of trouble to find a viable option to find an AR framework that fit my needs, see the  section. When I did find it(<a href="https://www.google.com/search?client=firefox-b-d&amp;q=unity+ar+foundation">Unity AR Foundation</a>), then I could start implementing the scraps scanning.</p><p id="f3ec308c-12f8-4707-bcec-f88cf158d0e3" class="">I used examples of digital measurements application and expanded from the basic features, To see the details of the process, please read <a href="Scraps%20Processing%20998caee048724fdc9ad1bed802eb9df7/Scraps%20Processing%20Scanner%20d047ea05d11a429ead4a9828ae6e394d.html"><span class="icon">🔬</span>Scraps Processing Scanner</a>. I was able to make an acceptable way to digitally outline the shape of a scrap and get the real measurements of it.</p><p id="43d70353-274e-42c5-9484-5939d9f9290c" class="">While the entire process is entirely different from what I first envisioned, it accomplishes the goal I originally had of scanning the outline of the scrap with the different measurements. However, it does not currently retrieves the color of the scrap and the user experience could also be improved. But I did prove that it could be done in a efficient and fast process, much faster than measuring by hands and manually entering the data.</p><h2 id="99fd673e-2849-46ef-9e2e-90adbd02c74c" class="">Visualizing Scraps Data</h2><p id="f5052d7b-d2e8-4a4d-82ef-a9453975ac21" class="">I first wanted to create a web platform to visualize the data. In my point of view, it made much more sense to do a web platform. It was a bigger screen, easier to navigate, easier to develop, everything was better on the computer. But it turned out it was my biased view of the project that was convincing me of that. I was quickly told that when working with textiles, people rarely keep their laptop around, that they would not take the time to get their computer out to look for a simple scrap. Their was too much friction with the computer interface, it needed to be easy to grab and check, and yet again the answer was the phone. Almost always in your pocket or near, super easy to grab, and you could scan and visualize scraps on the same platforms. Even if the interface would ultimately be harder to use, less convenient, with a smaller screen, it could not be on the computer. Even worse, three of the people I talked to did not even own a computer, they only had an iPad as a computer replacement.</p><p id="433f4b1d-2697-4bbe-925e-3a8fc8e54254" class="">So I decided to implement the interface with React Native so it could be used on mobile(iOS only for now). To see the implementation details, please look at the <a href="Scraps%20Processing%20998caee048724fdc9ad1bed802eb9df7/Scraps%20Processing%20Interface%201b7452d3a47d4d45bde891a8a27fe983.html"><span class="icon">🔖</span>Scraps Processing Interface</a>. I unfortunately could not implement everything I wanted to. I did not have time to do an automatic mosaic, could not complete the algorithm to automatically get the most effective rectangle inside a scrap, and many other things I wanted to do.</p><p id="bfa5025f-67c5-4628-bce2-9807caea51b3" class="">But, I did prove that it’s possible to visualize the data I gathered. The application is able to take the points recorded in the <a href="Scraps%20Processing%20998caee048724fdc9ad1bed802eb9df7/Scraps%20Processing%20Scanner%20d047ea05d11a429ead4a9828ae6e394d.html"><span class="icon">🔬</span>Scraps Processing Scanner</a> and interpret them on a 2D canvas. It’s able to communicate the approximate size of the scrap to the users. It also lets the user filters per fabrics type and classes, as well as show only close scraps.</p><h2 id="17824747-ebeb-4abe-85d8-2f0e5f569dac" class="">Sharing Scraps</h2><p id="8027b8a8-d5ab-43b2-920a-bbbdb572f37c" class="">While the app may not be out yet, all the scraps can be seen by anyone that is using the application theoretically. Because of the <a href="Scraps%20Processing%20998caee048724fdc9ad1bed802eb9df7/Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c.html"><span class="icon">📋</span>Scraps Processing API</a>, the data is centralized at one single point and can be accessed and modified by any client. It simply needs to implement the different requests. The scraps also contain the geolocation, the user’s communication information, and all the other tools needed to share scraps. All the different tools needed to actually share the scraps have been implemented and with some improvement in the user experience, could be useful.</p><p id="ae745fbc-e7e1-47f1-a863-9dcdbb43592d" class="">Hence, the API implements the idea of creating a communal platforms where scraps can shared and exchanged.</p><hr id="e0138f05-f96c-4ed1-bc23-970fbbce5d2a"/><figure id="d047ea05-d11a-429e-ad4a-9828ae6e394d" class="link-to-page"><a href="Scraps%20Processing%20998caee048724fdc9ad1bed802eb9df7/Scraps%20Processing%20Scanner%20d047ea05d11a429ead4a9828ae6e394d.html"><span class="icon">🔬</span>Scraps Processing Scanner</a></figure><figure id="892b8bd9-1f20-4a97-88fa-b2544dee732c" class="link-to-page"><a href="Scraps%20Processing%20998caee048724fdc9ad1bed802eb9df7/Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c.html"><span class="icon">📋</span>Scraps Processing API</a></figure><figure id="1b7452d3-a47d-4d45-bde8-91a8a27fe983" class="link-to-page"><a href="Scraps%20Processing%20998caee048724fdc9ad1bed802eb9df7/Scraps%20Processing%20Interface%201b7452d3a47d4d45bde891a8a27fe983.html"><span class="icon">🔖</span>Scraps Processing Interface</a></figure><p id="6fc298f8-e475-4d19-96d3-4a927d919ef9" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

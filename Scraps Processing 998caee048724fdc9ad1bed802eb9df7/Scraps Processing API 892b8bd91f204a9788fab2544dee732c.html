@@ -1,0 +1,809 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Scraps Processing API</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="892b8bd9-1f20-4a97-88fa-b2544dee732c" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">📋</span></div><h1 class="page-title">Scraps Processing API</h1><p class="page-description"></p></header><div class="page-body"><nav id="784e1a37-0524-42df-9e53-e790422b7146" class="block-color-gray table_of_contents"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#4d970eca-cab6-4f3b-83ed-6f4af306168c">Repository</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#d5303713-d5a3-48da-b2d2-47ce6019afe7">Introduction</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#a43078ca-c1f8-4ee1-b4e5-be625e14b352">Technology</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#b699d679-35dc-43c9-a299-cd9004abb78f">Python</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#e5c08d08-d3bb-4c9d-93c2-35f4e3660888">Flask</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#8f55d496-be3b-4226-a8b0-9db8ca36efaa">MongoDB</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#d0791035-6a6e-494f-9a6e-5d262d1bd49f">Fly.io</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#307b36ea-74ff-4ca2-ab8b-15d599dbdf65">Features</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#2f30a54b-7857-4524-8d67-ff712e803ede">Database Director</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#6ea82a7e-afef-4bf6-9960-8f9bc98cb85c">Create Scraps</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#66005c4f-3225-4ac0-a106-b554f7c08d2b">Process</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#ff1e7c70-3837-4dfe-ba7b-1d0e0b95dbad">Get Scraps</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#e667ddfb-11a3-4280-ab06-23698571d34e">Filter Scraps</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#415455ae-55c9-485a-ac9c-47118570724d">Get scraps within a certain distance</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#4f827b1e-cdff-45e2-af05-1c905ae22a5e">Get Textile Types and Classes</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#9fb4a33b-3108-45ee-9c3d-8abfa15ff7f4">Create/Login into an Account</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#eca583d8-b421-40f4-a63b-18f1d5031946">Upload Image</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#4a82ce16-0836-424a-8b9f-3986e182990b">Non-implemented Features</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#0ad2d224-f533-4d6f-9e21-e59bf00e8d00">Working Login System</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#bfffa9fb-e1f8-478f-9ec8-216f376e9653">Testing</a></div></nav><h1 id="4d970eca-cab6-4f3b-83ed-6f4af306168c" class="">Repository</h1><figure id="add6aaf7-1dfa-4104-99d0-c7c2ffc97536"><div class="source">https://github.com/ArnaudJalbert/scraps_processing_api</div></figure><h1 id="d5303713-d5a3-48da-b2d2-47ce6019afe7" class="">Introduction</h1><p id="e425975d-ec06-4370-becc-2e4d5ae1af48" class="">The API was made to make the communcations between the <a href="Scraps%20Processing%20Scanner%20d047ea05d11a429ead4a9828ae6e394d.html"><span class="icon">🔬</span>Scraps Processing Scanner</a> and the <a href="Scraps%20Processing%20Interface%201b7452d3a47d4d45bde891a8a27fe983.html"><span class="icon">🔖</span>Scraps Processing Interface</a>. It is the only modules that interact directly with the database and handles all the data manipulation. It uses MongoDB to store the data and is implemented with Flask. It is invisible to the user but is used extensively in both applications.</p><h1 id="a43078ca-c1f8-4ee1-b4e5-be625e14b352" class="">Technology</h1><h2 id="b699d679-35dc-43c9-a299-cd9004abb78f" class="">Python</h2><p id="a7388232-5d70-49e4-8915-858a456bde38" class="">I decided to implement the API in python. I already have a lot of experience with Python so I was comfortable using it. There are a lot of API framework available, lots of libraries, and a great amount of documentation and tutorials on python tools. It is also an very fast language to write and the higher level style of the language make it very intuitive.</p><h2 id="e5c08d08-d3bb-4c9d-93c2-35f4e3660888" class="">Flask</h2><p id="f4ef85ac-1f53-4c93-85f0-4d0926dac50d" class="">I decided to use <a href="https://flask.palletsprojects.com/en/3.0.x/">Flask</a> to build the API. I used Flask because it is a very minimalist and easy to use  framework which was perfect for what I wanted. It also required almost no setup time to get started which was perfect. The other alternatives were Django or FastAPI but Flask seemed to fit my needs better.</p><h2 id="8f55d496-be3b-4226-a8b0-9db8ca36efaa" class="">MongoDB</h2><p id="429d6aaf-4681-4a70-abc0-fd9e45dc7dc5" class="">I decided to use MongoDB as my database. I liked Mongo because it easy to setup in python. Mongo provides a python library to easily access the database. The database is also NoSQL so I can easily change the schemas of my data along the way without having to create new tables or restart again. There is also a very nice user interface to see your data and validates your requests and queries.</p><h2 id="d0791035-6a6e-494f-9a6e-5d262d1bd49f" class="">Fly.io</h2><p id="9fd94ad5-bc19-4090-9535-169b4a3fcc06" class="">I decided to use <a href="http://Fly.io">Fly.io</a> to host the API. It is a free service for hobbyists and small projects. There is already an integration with Flask directly so there is very little work for me to do to deploy my application. It also provides an URL and a nice dashboard to monitor activity.</p><h1 id="307b36ea-74ff-4ca2-ab8b-15d599dbdf65" class="">Features</h1><h2 id="2f30a54b-7857-4524-8d67-ff712e803ede" class="">Database Director</h2><p id="6c49ce33-a1ca-4fd0-a0db-e3474594abdd" class="">To facilitate the access to the Mongo database, I implemented a <a href="https://refactoring.guru/design-patterns/builder"><strong>builder pattern</strong></a><strong> </strong>to simplify the access to the database client. This gives a director to which we simply have to pass the name of the database we need to access and handle all the implementation. To get a new access to the database we simply need to use the director object.</p><pre id="cbe17b7b-5b62-4266-a9c2-eac3b86d1319" class="code"><code>from database_director import Director
+
+SCRAPS_PROCESSING_DATABASE = &quot;scraps_processing&quot;
+SCRAPS_PROCESSING_TEST_DATABASE = &quot;scraps_processing_test&quot;
+
+database = Director().create_database(SCRAPS_PROCESSING_DATABASE)
+# can also use the test database to not corrupt the real database when making tests
+test_database = Director().create_database(SCRAPS_PROCESSING_TEST_DATABASE)
+
+# then we can use the mongo client
+users = database.get_collection(&quot;users&quot;).find()  # get all users</code></pre><h2 id="6ea82a7e-afef-4bf6-9960-8f9bc98cb85c" class="">Create Scraps</h2><figure id="66937579-c28b-44c7-87b8-371f7d23c4d4" class="image"><a href="Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c/create_scrap_v001.png"><img style="width:3844px" src="Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c/create_scrap_v001.png"/></a></figure><h3 id="66005c4f-3225-4ac0-a106-b554f7c08d2b" class="">Process</h3><p id="ee6124d9-81ba-4efa-acae-5522215b59e6" class="">The API provides an endpoint to create a scrap. To execute properly, it needs to have the right URL parameters with the correct information. A valid request would look like</p><blockquote id="fcd21858-ab6c-4263-ba2e-59217c8ebfc2" class=""><em>url/scraps?textile-class={textile_class}&amp;textile-type={textile_type}&amp;color={color}&amp;owner={owner}&amp;geolocation=[geolocation]&amp;note={note}&amp;dimensions=[dimension]&amp;image={image_path}</em></blockquote><p id="b78ca002-ac00-4fe9-924a-7810ddac641d" class="">The API takes care of parsing the URL and first verifies to validate the data and ensure it fits the data type. Then it converts it to a python object that can then be processed pythonically.</p><pre id="79e3cd87-f6a0-441e-b46d-964a54ceb89c" class="code"><code>import numpy as np
+
+from colour import Color
+from dataclasses import dataclass
+from typing import List, Tuple
+
+# the scrap entity with all the information
+@dataclass
+class Scrap:
+    color: Color
+    fabric_class: str  # synthetic, natural or blend
+    dimensions: List[np.array]
+    owner: str
+    image_path: str
+    width: float  # calculated with dimensions
+    height: float  # calculated with dimensions
+    id: str = None  # generated in the API
+    geolocation: Tuple[float, float] = None
+    fabric_type: str = None
+    note: str = None</code></pre><p id="bc875cac-bff4-4411-9d0f-1ff07af9ea22" class="">Most of the data just needs to be converted in the right type or some basic parsing needs to be done. There is only one piece of data that is heavily processed: the dimensions. The problem with the current dimensions is that they are in 3D and they are not currently aligned on an axis. Hence, it is hard to transform that data into a 2D projection where the outline is represented by 2D points. What we need to do is to transform all the points so that they eventually line up on a certain axis, pretty much converting the 3d points to a plane.</p><figure id="7f16ea6c-f52d-4a05-9115-00a458c126d7" class="image"><a href="Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c/Screenshot_2023-12-07_at_4.20.38_PM.png"><img style="width:2080px" src="Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c/Screenshot_2023-12-07_at_4.20.38_PM.png"/></a></figure><figure id="d66784c6-34bd-4dcb-b2ba-9b28bc493917" class="image"><a href="Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c/Screenshot_2023-12-07_at_4.21.02_PM.png"><img style="width:1544px" src="Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c/Screenshot_2023-12-07_at_4.21.02_PM.png"/></a></figure><p id="294167dc-e1c1-4472-a599-fa8646e23580" class="">We can assume that the points are plane-like, meaning it is easy to estimate the equation of a plane from those points. Hence, we can use the <a href="https://stackoverflow.com/questions/1400213/3d-least-squares-plane">least squares regression plane equation</a> with the points available to estimate the plane equation. This allows us to find a plane that approximately passes through all the points. Since are points are positioned along a plane in Unity, the approximation is very precise.</p><figure id="c09492df-3bfd-4fe1-a588-c3423355079a" class="image"><a href="Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c/Screenshot_2023-12-07_at_4.25.41_PM.png"><img style="width:1680px" src="Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c/Screenshot_2023-12-07_at_4.25.41_PM.png"/></a></figure><p id="1477bc01-864b-4f9c-94a5-e59e7f7842f4" class="">Once we have the plane equation, we can find the transformation such that the plane is aligned in the z axis. We can apply this transformation to all the points and all the points will be aligned on the z axis.</p><figure id="369fab1c-6008-4936-8d32-4f45327aea69" class="image"><a href="Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c/Screenshot_2023-12-07_at_9.08.09_PM.png"><img style="width:963px" src="Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c/Screenshot_2023-12-07_at_9.08.09_PM.png"/></a></figure><figure id="471f8cf6-f69c-46c5-ac9e-db235284f966" class="image"><a href="Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c/Screenshot_2023-12-07_at_9.08.33_PM.png"><img style="width:931px" src="Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c/Screenshot_2023-12-07_at_9.08.33_PM.png"/></a></figure><p id="119f7c05-a46e-4a95-9d5a-55c39835231b" class="">Once everything is lined up on the z axis, we can drop the coordinates on the z axis and simply have a 2D shape</p><p id="2560903e-187b-4e7e-988c-c98d327bd9e7" class="">The last transformation to do is to move the shape closer to the origin <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>0</mn><mo separator="true">,</mo><mn>0</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(0,0)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span>. We can do it by finding the maximum width and height of the shape. The algorithm to find it is:</p><figure id="6e6b0ae8-1356-422d-8c3b-6576bc9b8833" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>X</mi><mo>=</mo><mtext>Set of all the x coordinates</mtext><mspace linebreak="newline"></mspace><mi>Y</mi><mo>=</mo><mtext>Set of all the y coordinates</mtext><mspace linebreak="newline"></mspace><mi>W</mi><mo>=</mo><mi>m</mi><mi>a</mi><mi>x</mi><mo stretchy="false">(</mo><mi>X</mi><mo stretchy="false">)</mo><mo>−</mo><mi>m</mi><mi>i</mi><mi>n</mi><mo stretchy="false">(</mo><mi>Y</mi><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><mi>H</mi><mo>=</mo><mi>m</mi><mi>a</mi><mi>x</mi><mo stretchy="false">(</mo><mi>Y</mi><mo stretchy="false">)</mo><mo>−</mo><mi>m</mi><mi>i</mi><mi>n</mi><mo stretchy="false">(</mo><mi>Y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">X=\text{Set of all the x coordinates}\\Y=\text{Set of all the y coordinates}\\W = max(X) -min(Y)\\H=max(Y)-min(Y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord text"><span class="mord">Set of all the x coordinates</span></span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Set of all the y coordinates</span></span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">ma</span><span class="mord mathnormal">x</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">min</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span><span class="mclose">)</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">ma</span><span class="mord mathnormal">x</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">min</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span><span class="mclose">)</span></span></span></span></span></div></figure><div id="1cc85199-3160-4ace-a27c-4fd3df358620" class="column-list"><div id="ff58bac4-e7db-43cf-8711-77fb74e1e2b1" style="width:50%" class="column"><p id="f874fe6e-552b-45a6-83c8-0569bcea896b" class="">Once we know the width and the height, we can find the midpoint of the shape with the following equations.</p><figure id="41742ef4-77c9-4578-9672-988d73586186" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>m</mi><mi>i</mi><mi>d</mi><mi>X</mi><mo>=</mo><mi>m</mi><mi>a</mi><mi>x</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>−</mo><mo stretchy="false">(</mo><mi>W</mi><mi mathvariant="normal">/</mi><mn>2</mn><mo stretchy="false">)</mo><mspace linebreak="newline"></mspace><mi>m</mi><mi>i</mi><mi>d</mi><mi>Y</mi><mo>=</mo><mi>m</mi><mi>i</mi><mi>n</mi><mo stretchy="false">(</mo><mi>Y</mi><mo stretchy="false">)</mo><mo>−</mo><mo stretchy="false">(</mo><mi>H</mi><mi mathvariant="normal">/</mi><mn>2</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">midX = max(x)-(W/2)\\midY=min(Y)-(H/2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">mi</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">ma</span><span class="mord mathnormal">x</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mord">/2</span><span class="mclose">)</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">mi</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">min</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mord">/2</span><span class="mclose">)</span></span></span></span></span></div></figure></div><div id="988c4038-a3ab-41aa-91b0-0b3a07a3a2c8" style="width:50%" class="column"><figure id="1666c52b-dcd1-4cfd-9e1d-ae61dd6d5c57" class="image"><a href="Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c/Untitled.png"><img style="width:740px" src="Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c/Untitled.png"/></a></figure></div></div><div id="c32fd008-5f15-4ce4-b2be-453cc1498fd2" class="column-list"><div id="b26958f9-0783-41bd-8e50-cf2d493b0407" style="width:50%" class="column"><p id="c08588c6-2abc-41cc-a1f8-dea25a17ffb5" class="">Then for all points in the shape, we can substract <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mi>i</mi><mi>d</mi><mi>X</mi></mrow><annotation encoding="application/x-tex">midX</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">mi</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span></span></span></span></span><span>﻿</span></span> from the x coordinates and <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mi>i</mi><mi>d</mi><mi>Y</mi></mrow><annotation encoding="application/x-tex">midY</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">mi</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span></span></span></span></span><span>﻿</span></span> from the y coordinates to center the shape in the middle.</p><p id="5947f205-5322-4414-9875-8f539226db85" class="">Moving the shape to the center will help streamline the process of drawing the scrap later in the process.</p></div><div id="5306b2c5-4c9c-440b-8f2a-4fd672cc4b9d" style="width:50%" class="column"><figure id="9ff3140f-98f0-4274-8b64-003dc8b42fd9" class="image"><a href="Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c/Screenshot_2023-12-07_at_9.33.11_PM.png"><img style="width:665px" src="Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c/Screenshot_2023-12-07_at_9.33.11_PM.png"/></a></figure></div></div><h2 id="ff1e7c70-3837-4dfe-ba7b-1d0e0b95dbad" class="">Get Scraps</h2><p id="725d2187-9384-49af-a7a8-be3628e6a94a" class="">I created an endpoint to retrieve the registered scraps. Since the scraps were correctly stored and transform at the entry point of the API, this requests becomes very easy to implement. We simply need to retrieve all the Scraps records from the Mongo database. To do so we can even use <strong><a href="https://pymongo.readthedocs.io/en/stable/">Mongo’s python interface</a></strong>.</p><pre id="291ba231-f4c3-413a-871b-ed04dfdf187c" class="code"><code>from database_director import Director, SCRAPS_COLLECTION
+
+
+database = Director().create_database()  # returns real database by default
+
+# returns all scraps in database
+scraps = list(database.get_collection(SCRAPS_COLLECTION).find())</code></pre><figure id="e797dd17-75be-4f42-aa77-862d36f76c05" class="image"><a href="Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c/get_scrap_v001.png"><img style="width:2084px" src="Scraps%20Processing%20API%20892b8bd91f204a9788fab2544dee732c/get_scrap_v001.png"/></a></figure><h3 id="e667ddfb-11a3-4280-ab06-23698571d34e" class="">Filter Scraps</h3><p id="0942d62f-39a9-4f8b-afaa-8a2b63c285ee" class="">We can also add filters to the URL arguments to only get a subset of the scraps instead of all the scraps. This can be useful when filtering the scraps in the interface. To limit the code usage, I have implemented requests so that they match Mongo’s keys, that way we can use the request directly as a filter.</p><pre id="523e8a9a-ad8a-4066-8e1e-6733f8a3f656" class="code"><code>@app.get(&quot;/scraps&quot;)
+def get_scraps():
+		filter = dict(request.args)
+
+		# dict(request.args) gives us a dict with key-values pair from the url arguments
+		# filter -&gt; {&quot;textile_type&quot;: &quot;natural&quot;, &quot;owner&quot;: &quot;arn&quot;}
+		
+		scraps = list(database.get_collection(SCRAPS_COLLECTION).find(filter))</code></pre><h3 id="415455ae-55c9-485a-ac9c-47118570724d" class="">Get scraps within a certain distance</h3><p id="d78021b9-be3e-4036-b6f7-77f3e3276a5f" class="">We can filter scraps depending on the location where they were registered. That information is already available in the Scrap’s record. To filter, we simply need to current location of the user which we can include in the request as well as the max distance.</p><p id="37f27921-86cb-42b5-9280-f5a8c0c33c0c" class="">Then, we can calculate the distance between the two coordinates and check against the max distance provided. This can be done with the <strong><a href="https://geopy.readthedocs.io/en/stable/">geopy</a></strong> package</p><pre id="226ad1a9-9bdc-42b7-bccd-f25fc51387c0" class="code"><code>from geopy import distance
+
+for scrap in scraps:
+		# get the user&#x27;s location
+    origin = (float(url_args[&quot;latitude&quot;]), float(url_args[&quot;longitude&quot;]))
+		# the scrap&#x27;s location
+    scrap_location = (
+        float(scrap[&quot;geolocation&quot;][0]),
+        float(scrap[&quot;geolocation&quot;][1]),
+    )
+		# distance between the two
+    scrap_distance = distance.distance(origin, scrap_location).km
+
+    if scrap_distance &lt;= float(url_args[&quot;distance&quot;]):
+        close_scraps.append(scrap)</code></pre><p id="c25d1c9d-b8e6-42d7-a8fd-92bc98428f55" class="">
+</p><h2 id="4f827b1e-cdff-45e2-af05-1c905ae22a5e" class="">Get Textile Types and Classes</h2><p id="c46237b9-7838-4c1e-95d8-47900a90621d" class="">To keep a constant record of the available textile types and classes, I decided to store them in Mongo so they can be referenced from a central point. The different applications of the project can get a list of them with the endpoints:</p><ul id="bd7e329e-fdfd-4066-8b88-6d641be6c4c8" class="bulleted-list"><li style="list-style-type:disc"><strong><span style="border-bottom:0.05em solid">url/textile-classes</span></strong></li></ul><ul id="40ff541a-2e0e-41ce-8a7f-e3ad178d856c" class="bulleted-list"><li style="list-style-type:disc"><strong><span style="border-bottom:0.05em solid">url/textile-types</span></strong></li></ul><p id="e4eeb9a9-d3ee-473c-84f1-690a4af17345" class="">In the API, I simply fetch them from Mongo directly and return a list of them.</p><pre id="543c64af-497b-487d-95de-04e56de9a2bf" class="code"><code>@app.get(&quot;/textile-classes&quot;)
+def get_textile_classes():
+    &quot;&quot;&quot;
+    Get the current textile classes that are available.
+    Returns:
+        str: json formatted string of all textile classes
+    &quot;&quot;&quot;
+    try:
+        textile_classes_dict = list(
+            database.get_collection(TEXTILE_CLASSES_COLLECTION).find(
+                {}, {&quot;textile_class&quot;: 1, &quot;_id&quot;: 0}
+            )
+        )
+    except Exception as exception:
+        return str(exception), 204
+
+    textile_classes = list()
+
+    # get only the values not the whole dict
+    for textile_class in textile_classes_dict:
+        value = textile_class[&quot;textile_class&quot;]
+        textile_classes.append(value)
+
+    return dumps(textile_classes), 200</code></pre><p id="5ce08ef1-dae4-4478-be6f-e71920f7916d" class="">We can also filter the types by textile classes if needed.</p><pre id="d8269729-9556-40c9-8a5d-3273de8a2b64" class="code"><code>@app.get(&quot;/textile-types&quot;)
+def get_textile_types(textile_class=None):
+    &quot;&quot;&quot;
+    Get the current textile types that are available.
+    Returns:
+        str: json formatted string of all textile classes
+    &quot;&quot;&quot;
+    try:
+        if textile_class:
+            textile_filter = {&quot;textile_class&quot;: textile_class}
+        else:
+            textile_filter = {}
+        textile_types_dict = list(
+            database.get_collection(TEXTILE_TYPES_COLLECTION).find(
+                textile_filter, {&quot;textile_type&quot;: 1, &quot;_id&quot;: 0}
+            )
+        )
+    except Exception as exception:
+        return str(exception), 204
+    textile_types = list()
+
+    # get only the values not the whole dict
+    for textile_type in textile_types_dict:
+        value = textile_type[&quot;textile_type&quot;]
+        textile_types.append(value)
+
+    return dumps(textile_types), 200</code></pre><h2 id="9fb4a33b-3108-45ee-9c3d-8abfa15ff7f4" class="">Create/Login into an Account</h2><p id="d2cae6ce-86d4-42b2-8760-c4492c284871" class="">To create or retrieve  users, I also created endpoints to manage all this so it does not have to be handled by the interface or the scanner. I also represented the accounts with a python object to more easily manipulate them in the API.</p><pre id="c6cfdc20-988b-4ad8-919d-688f94bc914f" class="code"><code>from dataclasses import dataclass
+
+
+@dataclass
+class User:
+    user_id: str
+    username: str
+    email: str
+    instagram: str
+    password: str = None
+    description: str = None</code></pre><p id="125fbe97-6c0d-48fd-b4b4-724379d23c73" class="">Some of the attributes are not used yet but could be implemented in the future like the description or the password. I did not want to have a password feature since I have little knowledge about encrypting and cybersecurity and felt it would be easier to use the app in a demo context without.</p><p id="c5e64649-fe18-4da7-9494-0a978d5a7efc" class="">Most of the information is provided in the request, only the ID is generated by the API. It uses the username provided to create the unique ID so that it’s familiar to the user and easy to write in order to identify the scraps. There is a process to generate the ID that check that it does not already exist and use a different if it does exist.</p><h2 id="eca583d8-b421-40f4-a63b-18f1d5031946" class="">Upload Image</h2><p id="4e4d2b96-f21d-44a2-91e9-21d149d05a2a" class="">As mentioned in the section, the image is not sent a file directly but rather as a stream of data. Hence, I needed to decode the data directly into the API in order to get the image.</p><p id="b1b0d154-4ff5-4c5b-86e9-b23d9fb34ac2" class="">Fortunately, Flask provides a function that will automatically decode the image in the right format and make the heavy lifting for us. Once the image is decoded, we can temporarily save it into <a href="http://Fly.io">Fly.io</a>’s machine. Then, I am using <a href="https://cloudinary.com/">Cloudinary</a> to upload and store the image permanently. The service works great and I can pass a key, in this case the timestamp, to easily identify the image later without having the full path. Hence, we do not need to store the full path in Mongo, only the timestamp, meaning we don’t even have to send back the path to the scanner, only keep the timestamp in memory.</p><pre id="cc0776ce-d391-4a87-8f42-219d498b069d" class="code"><code>@app.route(&quot;/upload&quot;, methods=[&quot;POST&quot;])
+def upload():
+    if &quot;file&quot; not in request.files:
+        return &quot;No file part&quot;, 400
+
+    file = request.files[&quot;file&quot;]
+    if file.filename == &quot;&quot;:
+        return &quot;No selected file&quot;, 400
+
+    if file:
+        path = os.path.join(&quot;.&quot;, &quot;data&quot;, &quot;scrap_images&quot;, file.filename)
+        file.save(path)  # save the received image
+        while not os.path.exists(path):
+            time.sleep(1)
+        response = cloudinary.uploader.upload(
+            path, public_id=file.filename.replace(&quot;.png&quot;, &quot;&quot;)
+        )
+        return f&quot;Stored {file.filename}&quot;, 200</code></pre><h1 id="4a82ce16-0836-424a-8b9f-3986e182990b" class="">Non-implemented Features</h1><p id="d8bcbce8-cfbf-4ac9-b364-3f9f90aa422f" class="">In general, I implemented everything that needed to be done for the API. It always a support for the scanner and the interface, not a feature itself. It simply helps centralize the information and gives easy access to the database to all the parts of the project. There are still things that could be improved but nothing major is missing.</p><h2 id="0ad2d224-f533-4d6f-9e21-e59bf00e8d00" class="">Working Login System</h2><p id="a9b0a31f-2a89-4620-9403-401aebd49e74" class="">I wanted to make a real login and account systems but unfortunately I did not take the time to learn how to properly encode password and implement the login library in Flask. I preferred not taking passwords from users and risking a security problem. I also wanted to put my time in other aspects of the project.</p><h2 id="bfffa9fb-e1f8-478f-9ec8-216f376e9653" class="">Testing</h2><p id="cd140c18-6867-4aeb-acc5-56363b0b8e4e" class="">I also wanted to add more tests at the beginning. It makes adding new features and validating new endpoints easier and more robust. I did a couple in the beginning but as the project evolved I spent less and less time implementing tests unfortunately.</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
